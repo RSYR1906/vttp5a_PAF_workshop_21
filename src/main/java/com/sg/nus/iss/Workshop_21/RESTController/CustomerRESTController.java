@@ -33,7 +33,7 @@ public class CustomerRESTController {
         return ResponseEntity.ok().body(customerList);
     }
 
-    @GetMapping("/customers/{customer_id}")
+    @GetMapping("/customer/{customer_id}")
     public ResponseEntity<?> getCustomerById(@PathVariable Integer customer_id) {
         Customer customer = customerRepo.getCustomerById(customer_id);
 
@@ -46,7 +46,7 @@ public class CustomerRESTController {
         return ResponseEntity.ok(customer);
     }
 
-    @GetMapping("/customers/{customer_id}/orders")
+    @GetMapping("/customer/{customer_id}/orders")
     public ResponseEntity<?> getOrdersByCustomerId(@PathVariable Integer customer_id) {
 
         if (!customerRepo.customerExists(customer_id)) {
