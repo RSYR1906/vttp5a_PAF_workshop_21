@@ -12,26 +12,30 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sg.nus.iss.Workshop_21.model.Customer;
 import com.sg.nus.iss.Workshop_21.model.Order;
-import com.sg.nus.iss.Workshop_21.repo.CustomerDAO;
+import com.sg.nus.iss.Workshop_21.repo.CustomerRepo;
 
 @RestController
 @RequestMapping("/api")
 public class CustomerRESTController {
 
     @Autowired
-    private CustomerDAO customerDAO;
+    private CustomerRepo customerRepo;
 
     @GetMapping("/customers")
-    public ResponseEntity<List<Customer>> getCustomerList(int limit, int offset) {
+    public ResponseEntity<?> getCustomerList(int limit, int offset) {
 
-        List<Customer> customerList = customerDAO.getAllCustomers(limit, offset);
+        List<Customer> customerList = customerRepo.getAllCustomers(limit, offset);
+        if (customerList == null) {
+            // Return 404 Not Found if the customer does not exist
+            return ResponseEntity.status(404).body(Map.of("error", "Customerlist not found"));
+        }
 
         return ResponseEntity.ok().body(customerList);
     }
 
     @GetMapping("/customers/{customer_id}")
     public ResponseEntity<?> getCustomerById(@PathVariable Integer customer_id) {
-        Customer customer = customerDAO.getCustomerById(customer_id);
+        Customer customer = customerRepo.getCustomerById(customer_id);
 
         if (customer == null) {
             // Return 404 Not Found if the customer does not exist
@@ -45,11 +49,11 @@ public class CustomerRESTController {
     @GetMapping("/customers/{customer_id}/orders")
     public ResponseEntity<?> getOrdersByCustomerId(@PathVariable Integer customer_id) {
 
-        if (!customerDAO.customerExists(customer_id)) {
+        if (!customerRepo.customerExists(customer_id)) {
             return ResponseEntity.status(404).body(Map.of("error", "Customer not found", "customer_id", customer_id));
         }
 
-        List<Order> orders = customerDAO.getOrdersByCustomerId(customer_id);
+        List<Order> orders = customerRepo.getOrdersByCustomerId(customer_id);
 
         return ResponseEntity.ok(orders);
     }

@@ -13,7 +13,7 @@ import com.sg.nus.iss.Workshop_21.model.Customer;
 import com.sg.nus.iss.Workshop_21.model.Order;
 
 @Repository
-public class CustomerDAO {
+public class CustomerRepo {
 
     @Autowired
     private JdbcTemplate template;
