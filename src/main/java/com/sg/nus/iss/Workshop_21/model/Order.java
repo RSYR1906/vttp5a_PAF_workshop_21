@@ -1,8 +1,5 @@
 package com.sg.nus.iss.Workshop_21.model;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 public class Order {
     private Integer orderId;
     private Integer customerId;
